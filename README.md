@@ -39,24 +39,34 @@ Este proyecto realiza un análisis exploratorio estadístico profundo de una ser
 ```
 aapl-timeseries-analysis/
 │
-├── notebooks/
-│   └── 01_exploratory_analysis.ipynb   # Análisis exploratorio completo
-│
-├── src/
-│   ├── data_loader.py                  # Carga, validación y persistencia de datos
-│   ├── transformations.py              # Feature engineering (retornos, volatilidad, BB)
-│   ├── statistical_tests.py            # ADF, KPSS, ACF, PACF desde cero
-│   ├── decomposition.py                # STL-lite: tendencia + estacionalidad + residuo
-│   └── visualization.py               # 10 gráficos de calidad publicación
+├── README.md                     # Project documentation
+├── requirements.txt              # Python dependencies
 │
 ├── data/
-│   ├── raw/
-│   │   └── aapl_ohlcv.csv             # Datos crudos (generados automáticamente)
-│   └── processed/
-│       └── aapl_ohlcv.csv             # Datos validados (caché)
+│   ├── raw/                      # Raw downloaded OHLCV data
+│   │   └── aapl_ohlcv.csv
+│   │
+│   └── processed/                # Cleaned & validated datasets
+│       ├── aapl_ohlcv.csv
+│       └── AAPL_processed.csv
+│
+├── notebooks/
+│   └── 01_exploratory_analysis.ipynb   # Full exploratory data analysis
+│
+├── src/                          # Core source code (modular architecture)
+│   ├── __init__.py               # Package initializer
+│   ├── data_loader.py            # Data extraction, validation & persistence
+│   ├── transformations.py        # Feature engineering (returns, volatility, BB)
+│   ├── statistical_tests.py      # ADF, KPSS, ACF, PACF implementations
+│   ├── decomposition.py          # Time series decomposition (trend/seasonal/residual)
+│   └── visualization.py          # Publication-quality plots
 │
 ├── reports/
-│   └── figures/                        # Gráficos exportados (PNG, 150 dpi)
+│   ├── Report_study.tex          # Main LaTeX source file
+│   ├── Report_study.pdf          # Final compiled academic-style report
+│   ├── *.aux / *.log / *.toc     # LaTeX build artifacts
+│   │
+│   └── figures/                  # Exported figures (150 dpi PNG)
 │       ├── 01_price_overview.png
 │       ├── 02_return_distribution.png
 │       ├── 03_rolling_volatility.png
@@ -65,10 +75,7 @@ aapl-timeseries-analysis/
 │       ├── 06_decomposition.png
 │       ├── 07_volatility_clustering.png
 │       ├── 08_monthly_return_heatmap.png
-│       ├── 09_drawdown_analysis.png
-│       └── 10_statistical_summary.png
-│
-└── requirements.txt
+│       └── 09_drawdown_analysis.png
 ```
 
 ---
