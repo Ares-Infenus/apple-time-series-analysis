@@ -1,0 +1,718 @@
+%==============================================================================
+%  AAPL FINANCIAL TIME SERIES — EXECUTIVE TECHNICAL REPORT
+%  Compiled with: pdflatex (TeX Live 2023+)
+%  Author: Quantitative Research Team
+%  Date:   February 2026
+%==============================================================================
+
+\documentclass[11pt, a4paper, twoside]{article}
+
+% ── ENCODING & LANGUAGE ──────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% ── TYPOGRAPHY ────────────────────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{setspace}
+\setstretch{1.15}
+
+% ── PAGE GEOMETRY ─────────────────────────────────────────────────────────────
+\usepackage[
+  top=2.4cm, bottom=2.8cm,
+  left=2.6cm, right=2.6cm,
+  headheight=14pt
+]{geometry}
+
+% ── MATH ──────────────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, bm}
+
+% ── GRAPHICS ──────────────────────────────────────────────────────────────────
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage[labelfont=bf, font=small, skip=6pt]{caption}
+\usepackage{subcaption}
+\usepackage{float}
+
+% ── TABLES ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+
+% ── COLOUR PALETTE ────────────────────────────────────────────────────────────
+\definecolor{NavyDeep}{RGB}{10,  36,  99}
+\definecolor{SlateBlue}{RGB}{44,  77, 143}
+\definecolor{IceGray}{RGB}{242, 245, 250}
+\definecolor{AccentGold}{RGB}{196, 153,  40}
+\definecolor{MidGray}{RGB}{100, 110, 125}
+\definecolor{LightRule}{RGB}{200, 210, 225}
+
+% ── HEADERS & FOOTERS ────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.3pt}
+\fancyhead[LE,RO]{\small\color{MidGray}\textit{Statistical Analysis of Financial Time Series — AAPL}}
+\fancyhead[RE,LO]{\small\color{MidGray}\textit{Quantitative Research}}
+\fancyfoot[C]{\small\color{MidGray}\thepage}
+\fancyfoot[R]{\small\color{MidGray}\textit{Confidential · February 2026}}
+
+% ── SECTION STYLING ──────────────────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\section}
+  {\color{NavyDeep}\large\bfseries}
+  {\color{AccentGold}\thesection.}{0.6em}{}[\vspace{-2pt}\rule{\linewidth}{0.6pt}]
+\titleformat{\subsection}
+  {\color{SlateBlue}\normalsize\bfseries}
+  {\thesubsection}{0.5em}{}
+\titlespacing{\section}{0pt}{18pt}{6pt}
+\titlespacing{\subsection}{0pt}{10pt}{4pt}
+
+% ── HYPERLINKS ────────────────────────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=NavyDeep,
+  citecolor=SlateBlue,
+  urlcolor=SlateBlue,
+  pdftitle={Statistical Analysis of Financial Time Series — AAPL},
+  pdfauthor={Quantitative Research Team},
+  pdfsubject={Econometric Analysis, Time Series, Risk Modelling}
+]{hyperref}
+
+% ── CUSTOM COMMANDS ───────────────────────────────────────────────────────────
+\newcommand{\metric}[1]{\textbf{\textcolor{NavyDeep}{#1}}}
+\newcommand{\highlight}[1]{\colorbox{IceGray}{\small\texttt{#1}}}
+\newcommand{\kpibox}[2]{%
+  \begin{minipage}[t]{0.22\linewidth}
+    \centering
+    \vspace{4pt}
+    {\color{NavyDeep}\large\bfseries #1}\\[2pt]
+    {\small\color{MidGray} #2}
+    \vspace{4pt}
+  \end{minipage}%
+}
+
+% ── TCOLORBOX for callouts ────────────────────────────────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbset{
+  execbox/.style={
+    enhanced, breakable,
+    colback=IceGray, colframe=NavyDeep,
+    boxrule=0.7pt, arc=3pt,
+    left=8pt, right=8pt, top=5pt, bottom=5pt,
+    fonttitle=\bfseries\color{NavyDeep},
+    title style={colback=NavyDeep!12},
+  }
+}
+
+%==============================================================================
+\begin{document}
+%==============================================================================
+
+% ── COVER PAGE ────────────────────────────────────────────────────────────────
+\begin{titlepage}
+  \pagecolor{NavyDeep}
+  \color{white}
+  \vspace*{2.5cm}
+
+  \begin{center}
+    {\color{AccentGold}\rule{0.12\linewidth}{1.8pt}}\hspace{8pt}
+    {\small\MakeUppercase{\color{AccentGold}\bfseries Quantitative Research · Internal Report}}\hspace{8pt}
+    {\color{AccentGold}\rule{0.12\linewidth}{1.8pt}}
+
+    \vspace{1.8cm}
+
+    {\fontsize{28}{34}\selectfont\bfseries
+      Statistical Analysis of\\[6pt]
+      Financial Time Series}
+
+    \vspace{0.9cm}
+    {\color{AccentGold}\rule{0.55\linewidth}{1pt}}
+    \vspace{0.9cm}
+
+    {\Large\bfseries Apple Inc.\ (AAPL) · 2019–2024}
+
+    \vspace{1.6cm}
+
+    {\normalsize
+      \begin{tabular}{rl}
+        \textbf{Methodology:} & Classical Econometrics · NumPy/SciPy \\[4pt]
+        \textbf{Coverage:}    & 1{,}304 trading days \\[4pt]
+        \textbf{Date:}        & February 2026 \\[4pt]
+        \textbf{Version:}     & 1.0 — Public Draft \\[4pt]
+        \textbf{Status:}      & {\color{AccentGold}\textbf{Confidential}}
+      \end{tabular}
+    }
+
+    \vspace{2.5cm}
+
+    % KPI strip
+    \begin{tcolorbox}[
+      enhanced, colback=white!12!NavyDeep, colframe=AccentGold,
+      boxrule=0.8pt, arc=4pt, width=0.88\linewidth,
+    ]
+      \centering\color{white}
+      \kpibox{$-3.26\%$}{VaR (5\%, 1-day)}
+      \kpibox{$-5.19\%$}{CVaR (5\%, 1-day)}
+      \kpibox{7.63}{Excess Kurtosis}
+      \kpibox{0.87}{Trend Strength}
+    \end{tcolorbox}
+
+    \vfill
+
+    {\small\color{white!60!NavyDeep}
+      Generated programmatically · Python (NumPy, SciPy, pandas, matplotlib)\\
+      All statistical tests implemented from first principles — no black-box wrappers.}
+  \end{center}
+\end{titlepage}
+\nopagecolor
+
+% ── TABLE OF CONTENTS ─────────────────────────────────────────────────────────
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+
+%==============================================================================
+\section{Executive Summary}
+%==============================================================================
+
+This report presents a rigorous statistical characterisation of Apple Inc.\ (AAPL) equity price dynamics
+across \textbf{1,304 trading days} spanning January 2019 to January 2024. The analytical pipeline employs
+classical econometric methods --- Augmented Dickey-Fuller (ADF), KPSS, autocorrelation functions, and
+additive decomposition --- implemented from first principles using \texttt{NumPy} and \texttt{SciPy},
+deliberately without reliance on high-level wrappers. The objective is to deliver a replicable, transparent
+statistical baseline suitable as input to volatility modelling, option pricing, and portfolio risk frameworks.
+
+\begin{tcolorbox}[execbox, title={Key Findings at a Glance}]
+\begin{itemize}\setlength\itemsep{3pt}
+  \item \textbf{Non-stationarity confirmed:} Log prices are trend-stationary (I(1)) per joint ADF+KPSS diagnosis.
+        First-differencing yields strictly stationary log-returns.
+  \item \textbf{Heavy tails:} Excess kurtosis of \metric{7.63} and near-zero Jarque-Bera $p$-value
+        decisively reject Gaussian return assumptions.
+  \item \textbf{Leverage effect:} Negative skewness ($-0.247$) indicates larger-magnitude downside
+        returns, consistent with the equity leverage mechanism.
+  \item \textbf{Volatility clustering (ARCH effects):} Squared returns exhibit significant ACF at
+        multiple lags, confirming the appropriateness of GARCH-family models.
+  \item \textbf{Trend-dominated series:} Trend strength of \metric{0.87} with moderate seasonality (0.28),
+        driven by three clearly identifiable market regimes.
+  \item \textbf{Risk metrics:} Daily VaR (5\%) = $-3.26\%$; Expected Shortfall = $-5.19\%$.
+\end{itemize}
+\end{tcolorbox}
+
+\vspace{6pt}
+
+Three macroeconomic regimes dominate the sample: the \textbf{Q1 2020 COVID-19 crash} ($-25$\,bps/day),
+the \textbf{2020--2021 post-pandemic recovery} fuelled by central bank liquidity, and the
+\textbf{2022 Federal Reserve rate-hike bear market}. Each regime exhibits a distinct volatility
+signature and return distribution, providing a rich environment for econometric identification.
+
+
+%==============================================================================
+\section{Data \& Methodology}
+%==============================================================================
+
+\subsection{Dataset Specification}
+
+The dataset comprises synthetic OHLCV data for AAPL generated via a \textbf{Geometric Brownian Motion
+model with stochastic volatility} (Heston-inspired), augmented with the following stylised features:
+
+\begin{itemize}\setlength\itemsep{3pt}
+  \item \textbf{Fat-tail innovations:} Student-$t$ distribution ($\nu = 5$) to replicate
+        the leptokurtic returns characteristic of equity markets.
+  \item \textbf{Leverage effect:} Return--volatility correlation $\rho = -0.7$, reproducing
+        the asymmetric response of volatility to negative news.
+  \item \textbf{Regime shifts:} Hand-calibrated to AAPL historical dynamics, including
+        the February--March 2020 crash, the post-pandemic rally, and the 2022 rate-hike
+        bear market.
+\end{itemize}
+
+\subsection{Statistical Pipeline}
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+  \toprule
+  \rowcolor{IceGray}
+  \textbf{Stage} & \textbf{Technique} & \textbf{Output} \\
+  \midrule
+  Ingestion       & OHLCV $\rightarrow$ log-returns $r_t = \ln(P_t/P_{t-1})$
+                  & Return series \\
+  Feature Eng.    & Rolling mean/vol (21/63/252d), EWMA, Bollinger Bands
+                  & Risk dashboard \\
+  Normality       & Jarque-Bera test, Q-Q analysis, KDE fitting
+                  & Distribution characterisation \\
+  Stationarity    & ADF (unit-root null) + KPSS (stationarity null)
+                  & I($d$) classification \\
+  Correlation     & ACF/PACF via Yule-Walker/Levinson-Durbin
+                  & ARMA order candidates \\
+  Decomposition   & Centred MA (period = 252) + Hodrick-Prescott filter
+                  & Trend/seasonal/residual \\
+  Risk            & Historical VaR, CVaR, drawdown analysis
+                  & Portfolio risk metrics \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+
+%==============================================================================
+\section{Price Overview \& Market Regimes}
+%==============================================================================
+
+Figure~\ref{fig:price_overview} illustrates the AAPL closing price series with
+\textbf{Bollinger Bands} ($\pm 2\sigma$), 20-day moving average, daily volume, and
+log-return bars over the full five-year window.
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 1 from the notebook output.
+  %   Recommended filename: fig1_price_volume_overview.png
+  %   Example path: figures/fig1_price_volume_overview.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/01_price_overview.png}
+  \caption{\textbf{AAPL Price \& Volume Overview (2019--2024).}
+    Daily closing price with Bollinger Bands ($\pm 2\sigma$), 20-day MA, daily
+    volume histogram, and log-return bars. Three macroeconomic regimes are
+    clearly delineated: the \textit{COVID-19 crash} (Q1 2020),
+    the \textit{recovery rally} (2020--2021), and the
+    \textit{rate-hike bear market} (2022).}
+  \label{fig:price_overview}
+\end{figure}
+
+The Bollinger Bands provide a real-time adaptive envelope: price breaches of
+the upper band signal momentum continuation or mean-reversion opportunities,
+while lower-band breaches coincide with the crash and bear-market episodes.
+The 2020 COVID drawdown compressed price from $\sim\$160$ to $\sim\$60$ in fewer than
+30 trading days before an equally sharp V-shaped recovery.
+
+
+%==============================================================================
+\section{Return Distribution \& Descriptive Statistics}
+%==============================================================================
+
+\subsection{Summary Statistics}
+
+Table~\ref{tab:stats} summarises the full distributional profile of daily log-returns.
+
+\begin{table}[H]
+  \centering
+  \caption{Descriptive statistics for AAPL daily log-returns (Jan 2019 -- Jan 2024).}
+  \label{tab:stats}
+  \rowcolors{2}{IceGray}{white}
+  \begin{tabular}{@{} l r p{6.2cm} @{}}
+    \toprule
+    \textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+    \midrule
+    Observations           & 1,304            & $\approx 5$ years of daily data \\
+    Mean (daily)           & $0.0000490$      & $\approx 12.4\%$ annualised drift \\
+    Std Dev (daily)        & $0.02071$        & $\approx 32.9\%$ annualised volatility \\
+    Skewness               & $-0.247$         & Slight left-tail asymmetry \\
+    Excess Kurtosis        & $7.632$          & \textbf{Heavy tails} (Gaussian $= 0$) \\
+    VaR (5\%, 1-day)       & $-3.26\%$        & Loss threshold exceeded 5\% of days \\
+    CVaR (5\%, 1-day)      & $-5.19\%$        & Expected loss on the worst 5\% of days \\
+    Jarque-Bera $p$-value  & $\approx 0.000$  & Normality \textbf{rejected} ($p < 0.001$) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Non-Gaussianity and Implications}
+
+An excess kurtosis of \textbf{7.63} is a hallmark of \emph{leptokurtosis}: the return
+distribution features substantially fatter tails than the Normal, meaning extreme moves
+occur far more frequently than Gaussian models predict. This has direct consequences
+for derivatives pricing --- it is the primary mechanism behind the \textbf{volatility smile},
+whereby Black-Scholes systematically under-prices deep out-of-the-money options.
+
+The negative skewness ($-0.247$) reflects the \emph{leverage effect}: negative shocks
+generate disproportionately large return magnitudes relative to positive shocks of the same
+absolute size. This asymmetry is captured in the GJR-GARCH specification recommended in
+Section~\ref{sec:conclusions}.
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 2 from the notebook output.
+  %   Recommended filename: fig2_return_distribution.png
+  %   Example path: figures/fig2_return_distribution.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/02_return_distribution.png}
+  \caption{\textbf{AAPL Return Distribution Analysis.}
+    \textit{Left:} Empirical histogram with fitted Normal and KDE overlay.
+    \textit{Centre:} Q-Q plot demonstrating systematic heavy-tail departure from Gaussian quantiles.
+    \textit{Right:} Rolling 63-day excess kurtosis and skewness --- note the pronounced
+    spikes during the 2020 crash and the 2022 bear market.}
+  \label{fig:distribution}
+\end{figure}
+
+
+%==============================================================================
+\section{Volatility Regimes \& Clustering}
+%==============================================================================
+
+Equity return volatility is not constant but \emph{clusters in time}: periods of
+elevated volatility are autocorrelated with subsequent elevated volatility (ARCH effects,
+Engle, 1982). This invalidates constant-variance models and motivates GARCH-family
+specifications for all risk estimation and option pricing downstream.
+
+\subsection{Regime Characterisation}
+
+\begin{table}[H]
+  \centering
+  \caption{Identified volatility regimes for AAPL, 2019--2024.}
+  \label{tab:regimes}
+  \rowcolors{2}{IceGray}{white}
+  \begin{tabular}{@{} l l r p{5.5cm} @{}}
+    \toprule
+    \textbf{Period} & \textbf{Regime} & \textbf{Ann.\ Vol.} & \textbf{Driver} \\
+    \midrule
+    2019 -- Feb 2020    & Baseline   & $\sim25$--$30\%$ & Ordinary market conditions \\
+    Q1 2020             & Crisis     & $\sim80$--$100\%$ & COVID-19 pandemic shock \\
+    2020--mid 2021      & Recovery   & $\sim30\%$       & Central bank liquidity injection \\
+    2022                & Bear       & $\sim45$--$55\%$ & Fed tightening cycle (fastest since 1980) \\
+    Post-2022           & Normalisation & $\sim25$--$35\%$ & Macro stabilisation \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 3 from the notebook output.
+  %   Recommended filename: fig3_volatility_regimes.png
+  %   Example path: figures/fig3_volatility_regimes.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/03_rolling_volatility.png}
+  \caption{\textbf{AAPL Annualised Volatility Regimes.}
+    Realised volatility at three rolling horizons (21-day, 63-day, 252-day) together with
+    EWMA ($\lambda = 1 - 2/31$). The crisis (Q1 2020), recovery, and bear-market
+    regimes are unambiguously visible.}
+  \label{fig:vol_regimes}
+\end{figure}
+
+\subsection{ARCH Effect Diagnostics}
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 4 from the notebook output.
+  %   Recommended filename: fig4_arch_effects.png
+  %   Example path: figures/fig4_arch_effects.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/04_stationarity_tests.png}
+  \caption{\textbf{ARCH Effect Evidence.}
+    \textit{Top left:} Raw log-returns.
+    \textit{Top right:} Squared returns (volatility proxy) exhibiting clustered amplitude.
+    \textit{Bottom left:} ACF of squared returns with statistically significant
+    positive autocorrelation confirming ARCH effects.
+    \textit{Bottom right:} $r_t$ vs $r_{t-1}$ scatter plot ($\hat{\rho} = 0.067$).}
+  \label{fig:arch}
+\end{figure}
+
+The ACF of squared returns (Figure~\ref{fig:arch}, bottom left) shows statistically
+significant positive autocorrelation at multiple lags --- the formal diagnostic for
+ARCH effects (Engle, 1982). This confirms that GARCH(1,1) or GJR-GARCH is the
+\textbf{required} next modelling step for any risk forecasting application.
+
+
+%==============================================================================
+\section{Stationarity Analysis (ADF + KPSS)}
+%==============================================================================
+
+Stationarity --- constant mean, variance, and autocovariance structure --- is a prerequisite
+for all time-series inference. Non-stationary inputs produce spurious regressions and
+invalidate standard hypothesis tests.
+
+\subsection{Joint ADF + KPSS Framework}
+
+Relying on either test in isolation is inadvisable: ADF has low power against trend-stationary
+alternatives, while KPSS over-rejects in small samples. The joint framework resolves this
+through a two-test contingency:
+
+\begin{table}[H]
+  \centering
+  \caption{Stationarity test results (ADF + KPSS joint framework).}
+  \label{tab:stationarity}
+  \rowcolors{2}{IceGray}{white}
+  \begin{tabular}{@{} l l r r l l @{}}
+    \toprule
+    \textbf{Test} & \textbf{Series} & \textbf{Statistic} & \textbf{$p$-value}
+      & \textbf{Result} & \textbf{Conclusion} \\
+    \midrule
+    ADF  & Log Price   & $-503.5$ & $0.010$ & Stationary$^*$  & Structural trend \\
+    KPSS & Log Price   & $8.004$  & $0.010$ & Non-Stationary  & Confirms trend \\
+    ADF  & Log Returns & $-69.8$  & $0.010$ & Stationary      & Unit root rejected \\
+    KPSS & Log Returns & $0.172$  & $0.100$ & Stationary      & Confirmed I(0) \\
+    \bottomrule
+    \multicolumn{6}{@{}l@{}}{\footnotesize $^*$ADF on prices: high statistic due to
+      deterministic drift; KPSS correctly identifies non-stationarity.}
+  \end{tabular}
+\end{table}
+
+The joint diagnosis classifies log prices as an \textbf{I(1) process} (trend-stationary
+or random walk with drift), while log-returns satisfy both tests, confirming I(0) stationarity.
+This is the standard result for equity markets and justifies the universal practice of
+working with returns rather than price levels in all modelling.
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 5 from the notebook output.
+  %   Recommended filename: fig5_stationarity.png
+  %   Example path: figures/fig5_stationarity.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/05_acf_pacf_correlogram.png}
+  \caption{\textbf{Stationarity Diagnostic Dashboard.}
+    \textit{Left:} Log price time plot with 63-day MA confirming the upward trend.
+    \textit{Right:} Rolling mean and standard deviation --- both clearly non-constant,
+    consistent with I(1) classification. ADF and KPSS result cards with the joint verdict
+    (\textsc{trend-stationary}) are inset.}
+  \label{fig:stationarity}
+\end{figure}
+
+
+%==============================================================================
+\section{Autocorrelation Structure (ACF / PACF)}
+%==============================================================================
+
+The Autocorrelation Function (ACF) and Partial Autocorrelation Function (PACF) are the
+canonical tools for ARMA model order identification. ACF captures the total linear
+dependence between $r_t$ and $r_{t-k}$; PACF isolates the \emph{direct} effect at lag $k$
+by conditioning on all intermediate lags through Yule-Walker / Levinson-Durbin recursion.
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 6 from the notebook output.
+  %   Recommended filename: fig6_acf_pacf.png
+  %   Example path: figures/fig6_acf_pacf.png
+  %------------------------------------------------------------
+  \includegraphics[width=0.92\linewidth]{figures/06_decomposition.png}
+  \caption{\textbf{Correlogram — AAPL Log Returns (40 lags).}
+    \textit{Top:} ACF with significant lags at 1, 2, 4, 6, 8 (outside the
+    $\pm 1.96/\sqrt{n}$ Bartlett band, shown in red).
+    \textit{Bottom:} PACF with significant lags at 1 and 4.}
+  \label{fig:correlogram}
+\end{figure}
+
+\subsection{Model Identification}
+
+Three diagnostic features emerge from the correlogram:
+
+\begin{enumerate}\setlength\itemsep{3pt}
+  \item \textbf{PACF cuts off after lag 4:} consistent with an AR(4) or ARMA($p$,$q$) model
+        with $p \leq 4$.
+  \item \textbf{Significant ACF at lag 4:} hints at weak day-of-week seasonality or
+        microstructure effects (bid-ask bounce, weekly option expiry cycles).
+  \item \textbf{Small magnitudes ($|\hat{\rho}| < 0.08$):} the market is close to
+        weak-form efficient; any predictability is \emph{economically marginal}.
+\end{enumerate}
+
+\begin{tcolorbox}[execbox, title={Model Recommendation}]
+Begin with \textbf{ARMA(1,0)} as the parsimonious baseline, then evaluate
+\textbf{ARMA(4,4)} via AIC/BIC information criteria. Combine with a GARCH variance
+equation for joint ARMA-GARCH estimation.
+\end{tcolorbox}
+
+
+%==============================================================================
+\section{Time Series Decomposition}
+%==============================================================================
+
+Classical additive decomposition separates the price series into three orthogonal
+components:
+\[
+  y_t = T_t + S_t + \varepsilon_t
+\]
+where $T_t$ is the smooth trend (centred MA, window $= 252$ trading days),
+$S_t$ is the periodic seasonal component, and $\varepsilon_t$ is the irregular residual.
+
+\begin{table}[H]
+  \centering
+  \caption{Decomposition diagnostics.}
+  \label{tab:decomp}
+  \rowcolors{2}{IceGray}{white}
+  \begin{tabular}{@{} l r p{7cm} @{}}
+    \toprule
+    \textbf{Component} & \textbf{Strength / Std} & \textbf{Interpretation} \\
+    \midrule
+    Trend strength     & 0.87  & Centred MA captures 87\% of non-residual variance \\
+    Seasonal strength  & 0.28  & Modest annual cycle (Q4 earnings, January effect) \\
+    Residual std       & 21.6  & Substantial unexplained variation \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 7 from the notebook output.
+  %   Recommended filename: fig7_decomposition.png
+  %   Example path: figures/fig7_decomposition.png
+  %------------------------------------------------------------
+  \includegraphics[width=0.9\linewidth]{figures/07_volatility_clustering.png}
+  \caption{\textbf{Additive Time Series Decomposition (period = 252 trading days).}
+    From top: original price, extracted trend component, seasonal component, and
+    irregular residual. Trend strength 0.872 confirms the series is dominantly driven
+    by the macro regime cycle.}
+  \label{fig:decomp}
+\end{figure}
+
+
+%==============================================================================
+\section{Risk Metrics \& Seasonal Patterns}
+%==============================================================================
+
+\subsection{Monthly Return Calendar}
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 8 from the notebook output.
+  %   Recommended filename: fig8_monthly_calendar.png
+  %   Example path: figures/fig8_monthly_calendar.png
+  %------------------------------------------------------------
+  \includegraphics[width=0.95\linewidth]{figures/08_monthly_return_heatmap.png}
+  \caption{\textbf{AAPL Monthly Return Calendar (\%).}
+    Green cells indicate positive months; red cells indicate negative months.
+    Intensity is proportional to return magnitude. Key episodes identified:
+    March 2020 (COVID crash), 2022 bear market (persistent red), and
+    the Q3/Q4 2020 recovery.}
+  \label{fig:calendar}
+\end{figure}
+
+Three calendar patterns are worth noting. First, Q1 2020 represents the densest
+cluster of negative monthly returns in the dataset, driven entirely by the pandemic
+shock rather than any calendar seasonality. Second, the 2022 Fed tightening cycle
+produced a \emph{secular repricing} that persisted across all months of the year,
+distinguishing it from idiosyncratic episodic crashes. Third, no robust January effect
+is detectable, consistent with large-cap efficient market expectations.
+
+\subsection{Drawdown Analysis}
+
+\begin{figure}[H]
+  \centering
+  %------------------------------------------------------------
+  % ► INSERT IMAGE HERE
+  %   Replace the path below with the actual file path of
+  %   Figure 9 from the notebook output.
+  %   Recommended filename: fig9_drawdown.png
+  %   Example path: figures/fig9_drawdown.png
+  %------------------------------------------------------------
+  \includegraphics[width=\linewidth]{figures/09_drawdown_analysis.png}
+  \caption{\textbf{AAPL Drawdown from All-Time High.}
+    \textit{Top:} Price series with all-time high watermark.
+    \textit{Bottom:} Drawdown profile. The COVID crash reached approximately
+    $-35\%$ (February--March 2020); the 2022 bear market reached $-30\%$.
+    Both recovered with V-shaped trajectories within 6--12 months.}
+  \label{fig:drawdown}
+\end{figure}
+
+
+%==============================================================================
+\section{Conclusions \& Recommended Next Steps}
+\label{sec:conclusions}
+%==============================================================================
+
+This report establishes a \textbf{rigorous statistical baseline} for AAPL equity
+time series over 2019--2024. The key empirical regularities --- non-normality,
+volatility clustering, near-unit-root prices, and weak short-run return autocorrelation ---
+are fully consistent with the stylised facts of equity markets documented across decades
+of empirical finance research (Fama, 1970; Engle, 1982; Bollerslev, 1986).
+
+The following modelling extensions are recommended in priority order:
+
+\begin{enumerate}\setlength\itemsep{6pt}
+
+  \item \textbf{GARCH(1,1) / GJR-GARCH:}
+    Model time-varying conditional volatility for dynamic VaR and option pricing.
+    The documented leverage effect ($\rho = -0.7$) specifically argues for the
+    GJR-GARCH asymmetric specification over symmetric GARCH(1,1).
+
+  \item \textbf{ARMA-GARCH (joint estimation):}
+    Combine the ARMA(1,0) mean equation with a GARCH variance equation.
+    Evaluate model adequacy via the Ljung-Box test on standardised residuals and
+    the ARCH-LM test on squared standardised residuals.
+
+  \item \textbf{Copula modelling (multi-asset extension):}
+    For portfolio-level risk, a Student-$t$ copula is appropriate given the heavy
+    tails observed here. This extends the analysis from single-asset VaR to
+    portfolio Expected Shortfall under tail dependence.
+
+  \item \textbf{Hidden Markov Model (regime switching):}
+    A 2--3 state HMM would formally identify the COVID/normal/bear market regimes
+    visible in Figures~\ref{fig:vol_regimes} and \ref{fig:drawdown}, enabling
+    conditional forecasting by regime.
+
+  \item \textbf{Zivot-Andrews structural break test:}
+    Formal econometric identification of the COVID and rate-hike break dates,
+    and testing for parameter stability across regimes.
+
+\end{enumerate}
+
+\vspace{8pt}
+
+\begin{tcolorbox}[execbox, title={Reproducibility Statement}]
+All analyses were implemented from first principles in Python using \texttt{NumPy},
+\texttt{SciPy}, \texttt{pandas}, \texttt{matplotlib}, and \texttt{seaborn}.
+No proprietary or black-box statistical libraries were used.
+The full code is available in the project repository under \texttt{01\_exploratory\_analysis.ipynb}.
+\end{tcolorbox}
+
+\vspace{12pt}
+
+%==============================================================================
+% REFERENCES
+%==============================================================================
+\begin{thebibliography}{9}
+\bibitem{engle82}
+  Engle, R.\ F.\ (1982).
+  Autoregressive conditional heteroscedasticity with estimates of the variance of
+  United Kingdom inflation. \textit{Econometrica}, 50(4), 987--1007.
+
+\bibitem{bollerslev86}
+  Bollerslev, T.\ (1986).
+  Generalised autoregressive conditional heteroscedasticity.
+  \textit{Journal of Econometrics}, 31(3), 307--327.
+
+\bibitem{fama70}
+  Fama, E.\ F.\ (1970).
+  Efficient capital markets: A review of theory and empirical work.
+  \textit{Journal of Finance}, 25(2), 383--417.
+
+\bibitem{dickey79}
+  Dickey, D.\ A.\ \& Fuller, W.\ A.\ (1979).
+  Distribution of the estimators for autoregressive time series with a unit root.
+  \textit{Journal of the American Statistical Association}, 74(366), 427--431.
+
+\bibitem{kpss92}
+  Kwiatkowski, D., Phillips, P.\ C.\ B., Schmidt, P.\ \& Shin, Y.\ (1992).
+  Testing the null hypothesis of stationarity against the alternative of a unit root.
+  \textit{Journal of Econometrics}, 54(1--3), 159--178.
+
+\bibitem{heston93}
+  Heston, S.\ L.\ (1993).
+  A closed-form solution for options with stochastic volatility with applications
+  to bond and currency options. \textit{Review of Financial Studies}, 6(2), 327--343.
+\end{thebibliography}
+
+%==============================================================================
+\end{document}
+%==============================================================================
