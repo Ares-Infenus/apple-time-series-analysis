@@ -1,0 +1,28 @@
+\contentsline {section}{I.\hskip 1em\relax Executive Summary}{5}{Doc-Start}%
+\contentsline {section}{II.\hskip 1em\relax Data \& Methodology}{7}{Doc-Start}%
+\contentsline {section}{\numberline {1}Statistical Pipeline}{7}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Data Ingestion \& Transformation}{7}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Feature Engineering}{7}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Stationarity Testing}{8}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Correlation Structure}{8}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Time Series Decomposition}{8}{subsection.1.5}%
+\contentsline {section}{III.\hskip 1em\relax Return Distribution \& Descriptive Statistics}{9}{subsection.1.5}%
+\contentsline {section}{\numberline {2}Descriptive Statistics}{9}{section.2}%
+\contentsline {section}{\numberline {3}Leptokurtosis and the Volatility Smile}{10}{section.3}%
+\contentsline {section}{IV.\hskip 1em\relax Price \& Volume Overview}{11}{figure.caption.2}%
+\contentsline {section}{V.\hskip 1em\relax Volatility Regimes \& Clustering}{13}{figure.caption.3}%
+\contentsline {section}{\numberline {4}Regime-by-Regime Volatility Analysis}{13}{section.4}%
+\contentsline {section}{\numberline {5}Formal ARCH Diagnostics}{14}{section.5}%
+\contentsline {section}{VI.\hskip 1em\relax Stationarity Analysis}{15}{figure.caption.6}%
+\contentsline {section}{\numberline {6}Joint ADF + KPSS Framework}{15}{section.6}%
+\contentsline {section}{VII.\hskip 1em\relax Autocorrelation Structure}{17}{figure.caption.8}%
+\contentsline {section}{\numberline {7}Model Order Identification}{18}{section.7}%
+\contentsline {section}{VIII.\hskip 1em\relax Time Series Decomposition}{19}{section.7}%
+\contentsline {section}{\numberline {8}Decomposition Diagnostics}{19}{section.8}%
+\contentsline {section}{IX.\hskip 1em\relax Risk Metrics \& Seasonal Patterns}{21}{figure.caption.11}%
+\contentsline {section}{\numberline {9}Monthly Return Calendar}{21}{section.9}%
+\contentsline {section}{\numberline {10}Drawdown Analysis}{22}{section.10}%
+\contentsline {section}{X.\hskip 1em\relax Conclusions \& Recommended Next Steps}{23}{figure.caption.13}%
+\contentsline {section}{\numberline {11}Recommended Extensions}{23}{section.11}%
+\contentsline {section}{\numberline {12}Technical Notes}{24}{section.12}%
+\contentsfinish 
